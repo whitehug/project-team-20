@@ -15,55 +15,49 @@ public class ShipTest {
     @Test
     public void testMinesweeperCreation() {
         Ship ship = new Ship("Minesweeper");
-        Square square = new Square(1, 'a');
-        occupiedSquares = ship.getOccupiedSquares();
-        occupiedSquares.add(new Square(1, 'a'));
-        Square square2 = occupiedSquares.get(0);
-        occupiedSquares.add(new Square(1, 'b'));
-        assertTrue(square.getColumn()==square2.getColumn() && square.getRow()==square2.getRow());
-        square.setColumn('b');
-        square2 = occupiedSquares.get(1);
-        assertTrue(square.getColumn()==square2.getColumn() && square.getRow()==square2.getRow());
+        assertTrue(ship.getCapacity() == 2);
     }
 
     @Test
     public void testDestroyerCreation() {
         Ship ship = new Ship("DESTROYER");
-        Square square = new Square(1, 'a');
-        occupiedSquares = ship.getOccupiedSquares();
-        occupiedSquares.add(new Square(1, 'a'));
-        Square square2 = occupiedSquares.get(0);
-        occupiedSquares.add(new Square(1, 'b'));
-        occupiedSquares.add(new Square(1, 'c'));
-        assertTrue(square.getColumn()==square2.getColumn() && square.getRow()==square2.getRow());
-        square.setColumn('b');
-        square2 = occupiedSquares.get(1);
-        assertTrue(square.getColumn()==square2.getColumn() && square.getRow()==square2.getRow());
-        square.setColumn('c');
-        square2 = occupiedSquares.get(2);
-        assertTrue(square.getColumn()==square2.getColumn() && square.getRow()==square2.getRow());
+        assertTrue(ship.getCapacity() == 3);
     }
 
     @Test
     public void testBattleshipCreation() {
-        Ship ship = new Ship("battleship");
-        Square square = new Square(1, 'a');
-        occupiedSquares = ship.getOccupiedSquares();
-        occupiedSquares.add(new Square(1, 'a'));
-        Square square2 = occupiedSquares.get(0);
-        occupiedSquares.add(new Square(1, 'b'));
-        occupiedSquares.add(new Square(1, 'c'));
-        occupiedSquares.add(new Square(1, 'd'));
-        assertTrue(square.getColumn()==square2.getColumn() || square.getRow()==square2.getRow());
-        square.setColumn('b');
-        square2 = occupiedSquares.get(1);
-        assertTrue(square.getColumn()==square2.getColumn() || square.getRow()==square2.getRow());
-        square.setColumn('c');
-        square2 = occupiedSquares.get(2);
-        assertTrue(square.getColumn()==square2.getColumn() || square.getRow()==square2.getRow());
-        square.setColumn('d');
-        square2 = occupiedSquares.get(3);
-        assertTrue(square.getColumn()==square2.getColumn() || square.getRow()==square2.getRow());
+        Ship ship = new Ship("BATTLESHIP");
+        assertTrue(ship.getCapacity() == 4);
+    }
+
+    @Test
+    public void testAddSquares(){
+        Ship ship = new Ship("BATTLESHIP");
+        for(int i = 0; i < 4; i++) {
+            Square square = new Square(i, (char)(i + 'A'));
+            ship.addOccupiedSquares(square);
+            assertTrue(ship.getOccupiedSquares().contains(square));
+            assertTrue(ship.getCapacity() == 4);
+        }
+
+
+        Square square = new Square(7, (char)('F'));
+        ship.addOccupiedSquares(square);
+        assertTrue(ship.getOccupiedSquares().contains(square));
+        assertTrue(ship.getCapacity() == 5);
+    }
+
+    @Test
+    public void testSetSquares(){
+        Ship ship = new Ship("BATTLESHIP");
+        List<Square> toadd = new ArrayList<>();
+        for(int i = 0; i < 4; i++) {
+            Square square = new Square(i, (char)(i + 'A'));
+            toadd.add(square);
+        }
+        ship.setOccupiedSquares(toadd);
+        assertTrue(toadd.equals(ship.getOccupiedSquares()));
+        assertTrue(ship.getCapacity() == 4);
     }
 
     @Test
