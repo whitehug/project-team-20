@@ -1,6 +1,10 @@
 package cs361.battleships.models;
 
 import org.junit.Test;
+import org.junit.experimental.theories.suppliers.TestedOn;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -126,5 +130,26 @@ public class BoardTest {
             }
         }
     }
+
+    @Test
+    public void testGetShips(){
+        Board b = new Board();
+        List<Ship> ships = new ArrayList<>();
+        ships.add(new Ship("DESTROYER"));
+        ships.add(new Ship("MINESWEEPER"));
+        b.setShips(ships);
+        assertTrue(ships == b.getShips());
+    }
+
+    @Test
+    public void testGetAttack(){
+        Board b = new Board();
+        List<Result> attacks = new ArrayList<>();
+        attacks.add(new Result());
+        attacks.add(new Result());
+        b.setAttacks(attacks);
+        assertTrue(attacks == b.getAttacks());
+    }
+
 
 }

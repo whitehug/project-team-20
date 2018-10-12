@@ -16,11 +16,15 @@ public class ShipTest {
     public void testMinesweeperCreation() {
         Ship ship = new Ship("Minesweeper");
         assertTrue(ship.getCapacity() == 2);
+        ship = new Ship("minesweeper");
+        assertTrue(ship.getCapacity() == 2);
     }
 
     @Test
     public void testDestroyerCreation() {
         Ship ship = new Ship("DESTROYER");
+        assertTrue(ship.getCapacity() == 3);
+        ship = new Ship("DeStRoYeR");
         assertTrue(ship.getCapacity() == 3);
     }
 
@@ -28,6 +32,16 @@ public class ShipTest {
     public void testBattleshipCreation() {
         Ship ship = new Ship("BATTLESHIP");
         assertTrue(ship.getCapacity() == 4);
+        ship = new Ship("battleSHIP");
+        assertTrue(ship.getCapacity() == 4);
+    }
+
+    @Test
+    public void testEmptyShipCreation() {
+        Ship ship = new Ship("");
+        assertTrue(ship.getCapacity() == 0);
+        ship = new Ship();
+        assertTrue(ship.getCapacity() == 0);
     }
 
     @Test
