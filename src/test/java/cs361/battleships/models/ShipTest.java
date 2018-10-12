@@ -12,8 +12,8 @@ public class ShipTest {
     private List<Square> occupiedSquares;
 
     @Test
-    public void testDestroyerCreation() {
-        Ship ship = new Ship("Destroyer");
+    public void testMinesweeperCreation() {
+        Ship ship = new Ship("Minesweeper");
         Square square = new Square(1, 'a');
         occupiedSquares = ship.getOccupiedSquares();
         occupiedSquares.add(new Square(1, 'a'));
@@ -26,8 +26,8 @@ public class ShipTest {
     }
 
     @Test
-    public void testCruiserCreation() {
-        Ship ship = new Ship("CRUISER");
+    public void testDestroyerCreation() {
+        Ship ship = new Ship("DESTROYER");
         Square square = new Square(1, 'a');
         occupiedSquares = ship.getOccupiedSquares();
         occupiedSquares.add(new Square(1, 'a'));
