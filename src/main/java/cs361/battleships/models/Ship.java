@@ -20,11 +20,11 @@ public class Ship {
 
 			occupiedSquares = new ArrayList<>(4);
 		}
-		else if(kind.equals("CRUISER")) {
+		else if(kind.equals("DESTROYER")) {
 
 			occupiedSquares = new ArrayList<>(3);
 		}
-		else if(kind.equals("DESTROYER")) {
+		else if(kind.equals("MINESWEEPER")) {
 
 			occupiedSquares = new ArrayList<>(2);
 		}
