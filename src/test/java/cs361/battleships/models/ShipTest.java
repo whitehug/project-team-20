@@ -59,28 +59,4 @@ public class ShipTest {
         assertTrue(toadd.equals(ship.getOccupiedSquares()));
         assertTrue(ship.getCapacity() == 4);
     }
-
-    @Test
-    public void testAddSquares(){
-        Ship ship = new Ship("BATTLESHIP");
-        for(int i = 0; i < 4; i++) {
-            Square square = new Square(i, (char)(i + 'a'));
-            ship.addOccupiedSquares(square);
-            assertTrue(ship.getOccupiedSquares().contains(square));
-        }
-        assertTrue(ship.getOccupiedSquares().size() == 4);
-    }
-
-    @Test
-    public void testSetSquares(){
-        Ship ship = new Ship("BATTLESHIP");
-        List<Square> toadd = new ArrayList<>();
-        for(int i = 0; i < 4; i++) {
-            Square square = new Square(i, (char)(i + 'a'));
-            toadd.add(square);
-        }
-        ship.setOccupiedSquares(toadd);
-        assertTrue(toadd.equals(ship.getOccupiedSquares()));
-        assertTrue(ship.getOccupiedSquares().size() == 4);
-    }
 }
