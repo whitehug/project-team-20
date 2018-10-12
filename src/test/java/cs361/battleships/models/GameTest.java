@@ -17,7 +17,8 @@ public class GameTest {
 	public void TestGoodInputPlaceShip() {
 
         Game game = new Game();
-        assertTrue(game.placeShip(new Ship("BATTLESHIP"), 1, 'A', false));
+        for (int i = 1; i < 11; i++) assertTrue(game.placeShip(new Ship("BATTLESHIP"), i, 'F', false));
+
     }
 	@Test
     public void TestBadInputAttack() {
@@ -28,6 +29,7 @@ public class GameTest {
 	@Test
     public void TestGoodInputAttack() {
         Game game = new Game();
-        assertTrue(game.attack( 7,'D'));
+        for(int i=1; i<11; i++) assertTrue(game.attack( i,'D'));
+
     }
 }
