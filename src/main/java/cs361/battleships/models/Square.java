@@ -1,10 +1,17 @@
 package cs361.battleships.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @SuppressWarnings("unused")
 public class Square {
 
 	private int row;
 	private char column;
+
+	public Square(){
+		this.row = 0;
+		this.column = 0;
+	}
 
 	public Square(int row, char column) {
 		this.row = row;

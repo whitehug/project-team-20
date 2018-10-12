@@ -1,5 +1,6 @@
 package cs361.battleships.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.swing.*;
@@ -50,8 +51,8 @@ public class Board {
 		int shipLength = ship.getCapacity();
 
 		//within bounds
-		if(isVertical) {
-			if (x >= 0 && x < this.dimensions.x && iny >= 0 && iny < this.dimensions.y - shipLength + 1) {
+		if(!isVertical) {
+			if (x > 0 && x <= this.dimensions.x && iny >= 0 && iny < this.dimensions.y - shipLength + 1) {
 				List<Square> sqAdd = new ArrayList<>();
 				for(int i = 0; i < shipLength; i++){
 					//add squares to ship
@@ -71,7 +72,7 @@ public class Board {
 			}
 		}
 		else{
-			if (x >= 0 && x < this.dimensions.x - shipLength + 1 && iny >= 0 && iny < this.dimensions.y) {
+			if (x > 0 && x <= this.dimensions.x - shipLength + 1 && iny >= 0 && iny < this.dimensions.y) {
 				List<Square> sqAdd = new ArrayList<>();
 				for(int i = 0; i < shipLength; i++){
 					//add squares to ship
@@ -110,10 +111,17 @@ public class Board {
 		else{
 			iny = y - 'a';
 		}
-		if (!(x >= 0 && x < this.dimensions.x && iny >= 0 && iny < this.dimensions.y)) {
+		if (!(x > 0 && x <= this.dimensions.x && iny >= 0 && iny < this.dimensions.y)) {
 			r.setResult(AtackStatus.INVALID);
 			this.attacks.add(r);
 			return r;
+		}
+		for(Result atks : this.attacks){
+			if(atks.getLocation().getRow() == x && atks.getLocation().getColumn() == y){
+				r.setResult(AtackStatus.INVALID);
+				this.attacks.add(r);
+				return r;
+			}
 		}
 
 		//default cause
@@ -181,6 +189,7 @@ public class Board {
 	}
 
 	public Point getDimensions(){
-	return this.dimensions;
+		return this.dimensions;
 	}
+
 }

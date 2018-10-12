@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.Math;
 
 import static cs361.battleships.models.AtackStatus.*;
 
@@ -21,10 +22,11 @@ public class Game {
             return false;
 
         boolean opponentPlacedSuccessfully;
+        Ship opponant = new Ship(ship.getCapacity() == 2 ? "MINESWEEPER" : ship.getCapacity() == 3 ? "DESTROYER" : ship.getCapacity() == 4 ? "BATTLESHIP" : "");
         do {
             // AI places random ships, so it might try and place overlapping ships
             // let it try until it gets it right
-            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical());
+            opponentPlacedSuccessfully = opponentsBoard.placeShip(opponant, randRow(), randCol(), randVertical());
         } while (!opponentPlacedSuccessfully);
 
         return true;
@@ -44,23 +46,23 @@ public class Game {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
             opponentAttackResult = playersBoard.attack(randRow(), randCol());
-        } while(opponentAttackResult.getResult() != INVALID);
+        } while(opponentAttackResult.getResult() == INVALID);
 
         return true;
     }
 
     private char randCol() {
-        // TODO implement
-        return 'X';
+        int random_col = (int)(Math.random()*10 + 65);
+        return (char) random_col;
     }
 
     private int randRow() {
-        // TODO implement
-        return 0;
+        int random_row = (int)(Math.random()*10 + 1);
+        return random_row;
     }
 
     private boolean randVertical() {
-        // TODO implement
-        return false;
+        int rand_num = (int)(Math.random()*2);
+        return rand_num == 1;
     }
 }
