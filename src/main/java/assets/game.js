@@ -61,6 +61,13 @@ function markHits(board, elementId, surrenderText) {
 }
 
 function redrawGrid() {
+    if(isSetup){
+        document.getElementById("opContainer").style.display = "none";
+    }
+    else{
+        document.getElementById("opContainer").style.display = "block";
+    }
+
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
     makeGrid(document.getElementById("opponent"), false);
@@ -103,9 +110,11 @@ function cellClick() {
             placedShips++;
             if (placedShips == 3) {
                 isSetup = false;
+                redrawGrid();
                 registerCellListener((e) => {});
             }
         });
+
     } else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
@@ -173,4 +182,6 @@ function initGame() {
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
     });
+
+    redrawGrid();
 };
