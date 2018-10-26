@@ -97,7 +97,7 @@ button {
 }
 .battleLogText{
     height: 300px;
-    min-width: 200px;
+    min-width: 280px;
     overflow-y: auto;
     overflow-x: hidden;
     margin: auto;

@@ -4,6 +4,14 @@ var game;
 var shipType;
 var vertical;
 
+function addToLog(toAdd){
+    let element = document.createElement('h2');
+    element.innerHTML = toAdd;
+    let scroll = document.getElementById("scrollbar");
+    scroll.appendChild(element);
+    scrollBottom();
+}
+
 function scrollBottom(){
     let scroll = document.getElementById("scrollbar");
     scroll.scrollTo(0,scroll.scrollHeight);
@@ -51,7 +59,7 @@ function makeGrid(table, isPlayer) {
 }
 
 function markHits(board, elementId, surrenderText) {
-    board.attacks.forEach((attack) => {
+    board.attacks.forEach((attack, idx, array) => {
         let className;
         if (attack.result === "MISS")
             className = "miss";
@@ -60,13 +68,24 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result === "SUNK")
             className = "hit"
         else if (attack.result === "SURRENDER")
-            alert(surrenderText);
+            addToLog(surrenderText);
 
-        if(document.getElementsByClassName("lastPlaced").length != 0){
-            document.getElementsByClassName("lastPlaced")[0].classList.remove("lastPlaced");
-        }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add(className);
-        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("lastPlaced");
+        if(idx === array.length - 1 && elementId == "player"){
+            addToLog("Opponent Attacked: " + (attack.location.row-1) + ", " + (attack.location.column));
+            if(document.getElementsByClassName("lastPlaced").length != 0){
+                document.getElementsByClassName("lastPlaced")[0].classList.remove("lastPlaced");
+            }
+            document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("lastPlaced");
+        }
+        if(idx === array.length - 1 && elementId == "opponent"){
+            addToLog("You Attacked: " + (attack.location.row-1) + ", " + (attack.location.column));
+            if(document.getElementsByClassName("lastLastPlaced").length != 0){
+                document.getElementsByClassName("lastLastPlaced")[0].classList.remove("lastLastPlaced");
+            }
+            document.getElementById("opponent").rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("lastLastPlaced");
+        }
+
     });
 }
 
@@ -186,10 +205,6 @@ function cellClick() {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
             redrawGrid();
-            if(document.getElementsByClassName("lastLastPlaced").length != 0){
-                document.getElementsByClassName("lastLastPlaced")[0].classList.remove("lastLastPlaced");
-            }
-            document.getElementById("opponent").rows[row-1].cells[col.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("lastLastPlaced");
         })
     }
 }
@@ -198,7 +213,7 @@ function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
-            alert("Cannot complete the action");
+            addToLog("Not a valid square!")
             return;
         }
         handler(JSON.parse(req.responseText));
@@ -248,7 +263,7 @@ function initGame() {
     });
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
-       registerCellListener(place(4));
+        registerCellListener(place(4));
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
