@@ -5,14 +5,43 @@ var shipType;
 var vertical;
 
 function makeGrid(table, isPlayer) {
-    for (i=0; i<10; i++) {
+    for (i=0; i<11; i++) {
         let row = document.createElement('tr');
-        for (j=0; j<10; j++) {
-            let column = document.createElement('td');
-            column.addEventListener("click", cellClick);
-            row.appendChild(column);
+        if(i != 10) {
+            for (j=-1; j<10; j++) {
+                if(j != -1){
+                    let column = document.createElement('td');
+                    let content = document.createElement('div');
+                    column.addEventListener("click", cellClick);
+                    column.appendChild(content);
+                    row.appendChild(column);
+                }
+                else{
+                    let column = document.createElement('td');
+                    let content = document.createElement('div');
+                    column.classList.add("identifier");
+                    content.classList.add("identifier");
+                    content.innerHTML = i;
+                    column.appendChild(content);
+                    row.appendChild(column);
+                }
+            }
+            table.appendChild(row);
         }
-        table.appendChild(row);
+        else {
+            for (j=-1; j<10; j++) {
+                let column = document.createElement('td');
+                let content = document.createElement('div');
+                column.classList.add("identifier");
+                content.classList.add("identifier");
+                if(j != -1){
+                    content.innerHTML = String.fromCharCode(j + 'A'.charCodeAt(0));
+                }
+                column.appendChild(content);
+                row.appendChild(column);
+            }
+            table.appendChild(row);
+        }
     }
 }
 

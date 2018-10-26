@@ -4,11 +4,19 @@
 
 <h1>The Battleship game</h1>
 
-<table id="opponent" class="battleGrid">
-</table>
+<div class="battleGridFlex">
+    <div class="battleGridContainer">
+        <h2>Opponent's Board</h2>
+        <table id="opponent" class="battleGrid">
+        </table>
+    </div>
+    <div class="battleGridContainer">
+        <h2>Your Board</h2>
+        <table id="player" class="battleGrid">
+        </table>
+    </div>
+</div>
 
-<table id="player" class="battleGrid">
-</table>
 
 <ul>
     <li><button id="place_minesweeper">Place Minesweeper</button></li>
