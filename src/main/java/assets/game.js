@@ -56,7 +56,7 @@ function markHits(board, elementId, surrenderText) {
             className = "hit"
         else if (attack.result === "SURRENDER")
             alert(surrenderText);
-        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add(className);
     });
 }
 
@@ -70,7 +70,7 @@ function redrawGrid() {
     }
 
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
-        document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
+        document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("occupied");
     }));
     markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.playersBoard, "player", "You lost the game");
@@ -93,7 +93,7 @@ function registerCellListener(f) {
 
 function cellClick() {
     let row = this.parentNode.rowIndex + 1;
-    let col = String.fromCharCode(this.cellIndex + 65);
+    let col = String.fromCharCode(this.cellIndex + 64);
     console.log(col);
     if (isSetup) {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
@@ -134,7 +134,7 @@ function place(size) {
         let col = this.cellIndex;
         vertical = document.getElementById("is_vertical").checked;
         let table = document.getElementById("player");
-        for (let i=0; i<size; i++) {
+        for (let i=0; i<size && (vertical ? 0 < i + row && i + row < 10: 0 < i + col && i + col < 10); i++) {
             let cell;
             if(vertical) {
                 let tableRow = table.rows[row+i];
