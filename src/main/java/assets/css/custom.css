@@ -14,6 +14,23 @@
     height: 100%;
 }
 
+.battleLogContainer{
+    text-align: center;
+    margin: auto
+}
+.battleLogTitle{
+    font-size: 18px;
+    font-family: Verdana, Geneva, sans-serif;
+}
+.battleLogText{
+    height: 300px;
+    min-width: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: auto;
+    border: 1px solid black;
+}
+
 .setupContainer{
     width: 300px;
     padding-right: 15%;

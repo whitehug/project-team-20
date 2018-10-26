@@ -4,6 +4,11 @@ var game;
 var shipType;
 var vertical;
 
+function scrollBottom(){
+    let scroll = document.getElementById("scrollbar");
+    scroll.scrollTo(0,scroll.scrollHeight);
+}
+
 function makeGrid(table, isPlayer) {
     for (i=0; i<11; i++) {
         let row = document.createElement('tr');
@@ -68,11 +73,13 @@ function markHits(board, elementId, surrenderText) {
 function redrawGrid() {
     if(isSetup){
         document.getElementById("opContainer").style.display = "none";
+        document.getElementById("battleLog").style.display = "none";
         document.getElementById("setupWindow1").style.display = "block";
         document.getElementById("setupWindow2").style.display = "block";
     }
     else{
         document.getElementById("opContainer").style.display = "block";
+        document.getElementById("battleLog").style.display = "block";
         document.getElementById("setupWindow1").style.display = "none";
         document.getElementById("setupWindow2").style.display = "none";
     }
