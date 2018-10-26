@@ -63,9 +63,13 @@ function markHits(board, elementId, surrenderText) {
 function redrawGrid() {
     if(isSetup){
         document.getElementById("opContainer").style.display = "none";
+        document.getElementById("setupWindow1").style.display = "block";
+        document.getElementById("setupWindow2").style.display = "block";
     }
     else{
         document.getElementById("opContainer").style.display = "block";
+        document.getElementById("setupWindow1").style.display = "none";
+        document.getElementById("setupWindow2").style.display = "none";
     }
 
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
@@ -143,7 +147,7 @@ function place(size) {
         let col = this.cellIndex;
         vertical = document.getElementById("is_vertical").checked;
         let table = document.getElementById("player");
-        for (let i=0; i<size && (vertical ? 0 < i + row && i + row < 10: 0 < i + col && i + col < 10); i++) {
+        for (let i=0; i<size && (vertical ? 0 < i + row && i + row < 10: 0 < i + col && i + col < 11); i++) {
             let cell;
             if(vertical) {
                 let tableRow = table.rows[row+i];
