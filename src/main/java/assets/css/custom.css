@@ -183,8 +183,10 @@ td.identifier:hover{
 
 .miss {
     background-color: blue;
-    -webkit-filter: grayscale(70%); /* Safari */
-    filter: grayscale(70%);
+}
+
+h1 {
+    text-align: center;
 }
 
 .lastPlaced{
