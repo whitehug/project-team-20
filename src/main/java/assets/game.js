@@ -227,9 +227,8 @@ function place(size) {
     return function() {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
-        vertical = document.getElementById("is_vertical").checked;
         let table = document.getElementById("player");
-        for (let i=0; i<size && (vertical ? 0 < i + row && i + row < 10: 0 < i + col && i + col < 11); i++) {
+        for (let i=0; i<size && (vertical ? 0 <= i + row && i + row < 10: 0 < i + col && i + col < 11) && i + col != 0; i++) {
             let cell;
             if(vertical) {
                 let tableRow = table.rows[row+i];
@@ -255,15 +254,33 @@ function initGame() {
     makeGrid(document.getElementById("player"), true);
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
-       registerCellListener(place(2));
+        registerCellListener(place(2));
+        vertical = false;
     });
     document.getElementById("place_destroyer").addEventListener("click", function(e) {
         shipType = "DESTROYER";
        registerCellListener(place(3));
+       vertical = false;
     });
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
         registerCellListener(place(4));
+        vertical = false;
+    });
+    document.getElementById("place_minesweeper_v").addEventListener("click", function(e) {
+        shipType = "MINESWEEPER";
+        registerCellListener(place(2));
+        vertical = true;
+    });
+    document.getElementById("place_destroyer_v").addEventListener("click", function(e) {
+        shipType = "DESTROYER";
+        registerCellListener(place(3));
+        vertical = true;
+    });
+    document.getElementById("place_battleship_v").addEventListener("click", function(e) {
+        shipType = "BATTLESHIP";
+        registerCellListener(place(4));
+        vertical = true;
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
