@@ -93,4 +93,15 @@ td.identifier:hover{
 
 .miss {
     background-color: blue;
+    -webkit-filter: grayscale(70%); /* Safari */
+    filter: grayscale(70%);
+}
+
+.lastPlaced{
+    -webkit-filter: saturate(500%); /* Safari */
+    filter: saturate(500%);
+}
+.lastLastPlaced{
+    -webkit-filter: saturate(500%); /* Safari */
+    filter: saturate(500%);
 }

@@ -56,7 +56,12 @@ function markHits(board, elementId, surrenderText) {
             className = "hit"
         else if (attack.result === "SURRENDER")
             alert(surrenderText);
+
+        if(document.getElementsByClassName("lastPlaced").length != 0){
+            document.getElementsByClassName("lastPlaced")[0].classList.remove("lastPlaced");
+        }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add(className);
+        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("lastPlaced");
     });
 }
 
@@ -123,6 +128,10 @@ function cellClick() {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
             redrawGrid();
+            if(document.getElementsByClassName("lastLastPlaced").length != 0){
+                document.getElementsByClassName("lastLastPlaced")[0].classList.remove("lastLastPlaced");
+            }
+            document.getElementById("opponent").rows[row-1].cells[col.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("lastLastPlaced");
         })
     }
 }
