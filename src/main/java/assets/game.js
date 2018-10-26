@@ -66,7 +66,7 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result === "HIT")
             className = "hit";
         else if (attack.result === "SUNK")
-            className = "sink"
+            className = "sinkA"
         else if (attack.result === "SURRENDER")
             addToLog(surrenderText);
 
@@ -122,7 +122,7 @@ var oldListener;
 function registerCellListener(f) {
     let el = document.getElementById("player");
     for (i=0; i<10; i++) {
-        for (j=0; j<10; j++) {
+        for (j=0; j<11; j++) {
             let cell = el.rows[i].cells[j];
             cell.removeEventListener("mouseover", oldListener);
             cell.removeEventListener("mouseout", oldListener);
