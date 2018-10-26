@@ -175,14 +175,20 @@ td.identifier:hover{
 
 .hit {
     background-color: orange;
+    -webkit-filter: grayscale(30%); /* Safari */
+    filter: grayscale(30%);
 }
 
 .sink {
     background-color: red;
+    -webkit-filter: grayscale(30%); /* Safari */
+    filter: grayscale(30%);
 }
 
 .miss {
     background-color: blue;
+    -webkit-filter: grayscale(70%); /* Safari */
+    filter: grayscale(70%);
 }
 
 h1 {
