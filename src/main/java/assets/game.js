@@ -66,9 +66,11 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result === "HIT")
             className = "hit";
         else if (attack.result === "SUNK")
-            className = "sinkA"
-        else if (attack.result === "SURRENDER")
+            className = "sink"
+        else if (attack.result === "SURRENDER"){
             addToLog(surrenderText);
+            addToLog("<a href=\".\"><h2>Play Again?</h2></a>");
+        }
 
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add(className);
         if(idx === array.length - 1 && elementId == "player"){
