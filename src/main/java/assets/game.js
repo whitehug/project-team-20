@@ -124,6 +124,57 @@ function cellClick() {
 
             redrawGrid();
             placedShips++;
+
+            if(shipType === "MINESWEEPER") {
+                document.getElementById("place_minesweeper").classList.add("disabled");
+                document.getElementById("place_minesweeper").disabled = true;
+                document.getElementById("place_minesweeper_v").classList.add("disabled");
+                document.getElementById("place_minesweeper_v").disabled = true;
+                if(document.getElementById("place_destroyer").disabled == false) {
+                    document.getElementById("place_destroyer").focus();
+                    registerCellListener(place(3));
+                    shipType = "DESTROYER";
+                }
+                else {
+                    document.getElementById("place_battleship").focus();
+                    registerCellListener(place(4));
+                    shipType = "BATTLESHIP";
+                }
+            }
+            else if(shipType === "DESTROYER") {
+                document.getElementById("place_destroyer").classList.add("disabled");
+                document.getElementById("place_destroyer").disabled = true;
+                document.getElementById("place_destroyer_v").classList.add("disabled");
+                document.getElementById("place_destroyer_v").disabled = true;
+
+                 if(document.getElementById("place_battleship").disabled == false) {
+                    document.getElementById("place_battleship").focus();
+                    registerCellListener(place(4));
+                    shipType = "BATTLESHIP";
+                 }
+                 else {
+                    document.getElementById("place_minesweeper").focus();
+                    registerCellListener(place(2));
+                    shipType = "MINESWEEPER";
+                 }
+             }
+            else {
+                document.getElementById("place_battleship").classList.add("disabled");
+                document.getElementById("place_battleship_v").classList.add("disabled");
+                document.getElementById("place_battleship").disabled = true;
+                document.getElementById("place_battleship_v").disabled = true;
+
+                 if(document.getElementById("place_minesweeper").disabled == false) {
+                    document.getElementById("place_minesweeper").focus();
+                    registerCellListener(place(2));
+                    shipType = "MINESWEEPER";
+                 }
+                 else {
+                     document.getElementById("place_destroyer").focus();
+                     registerCellListener(place(4));
+                     shipType = "DESTROYER";
+                }
+            }
             if (placedShips == 3) {
                 isSetup = false;
                 redrawGrid();

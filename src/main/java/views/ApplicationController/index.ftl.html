@@ -35,13 +35,20 @@
         <table id="player" class="battleGrid">
         </table>
     </div>
-    <div id="setupWindow2"class="setupContainer">
-        <ul>
-            <li><button id="place_minesweeper">Place Minesweeper</button></li>
-            <li><button id="place_destroyer">Place Destroyer</button></li>
-            <li><button id="place_battleship">Place Battleship</button></li>
-            <li><input type="checkbox" id="is_vertical">Vertical</input></li>
-        </ul>
+    <div id="setupWindow2" class="setupContainer">
+
+        <div id="shipContainer">
+            <h2 id="shipBank"> Ship Bank</h2>
+            <button class="horizontal" id="place_minesweeper"></button>
+            <button class="horizontal" id="place_destroyer"></button>
+            <button class="horizontal" id="place_battleship"></button>
+            <div id="verticalContainer">
+                <button class="vertical" id="place_minesweeper_v"></button>
+                <button class="vertical" id="place_destroyer_v"></button>
+                <button class="vertical" id="place_battleship_v"></button>
+                <input type="checkbox" id="is_vertical">Vertical</input
+            </div>
+        </div>
     </div>
 </div>
 
