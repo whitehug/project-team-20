@@ -9,14 +9,8 @@
     height: 80%;
 }
 
-.setupWindow2 {
-
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
 #shipContainer {
-    width: 120%;
+    width: 100%;
     border-style: solid;
     border-width: 2px;
 }
@@ -103,12 +97,18 @@ button {
     margin: auto;
     border: 1px solid black;
 }
-
-.setupContainer{
-    width: 300px;
+.setupContainer {
+    width: 186px;
     padding-right: 15%;
     height: 100%;
     margin: auto;
+}
+
+#setupWindow2 {
+    width: 300px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .battleGrid {
@@ -155,6 +155,9 @@ h2{
     text-align: center;
     font-family: Verdana, Geneva, sans-serif;
     padding-left: 4.5%;
+}
+#battleLogHeader {
+    padding-left: 0px;
 }
 
 td:hover {
