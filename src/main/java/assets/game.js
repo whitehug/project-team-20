@@ -125,21 +125,22 @@ function markHits(board, elementId, surrenderText) {
             sonarButtonSetup();
 
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add(className);
-        if(idx === array.length - 1 && elementId == "player"){
-            addToLog("Opponent Attacked: " + (attack.location.row-1) + ", " + (attack.location.column));
-            if(document.getElementsByClassName("lastPlaced").length != 0){
-                document.getElementsByClassName("lastPlaced")[0].classList.remove("lastPlaced");
+        if(!sonarOn) {
+            if(idx === array.length - 1 && elementId == "player"){
+                addToLog("Opponent Attacked: " + (attack.location.row-1) + ", " + (attack.location.column));
+                if(document.getElementsByClassName("lastPlaced").length != 0){
+                    document.getElementsByClassName("lastPlaced")[0].classList.remove("lastPlaced");
+                }
+                document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("lastPlaced");
             }
-            document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("lastPlaced");
-        }
-        if(idx === array.length - 1 && elementId == "opponent"){
-            addToLog("You Attacked: " + (attack.location.row-1) + ", " + (attack.location.column));
-            if(document.getElementsByClassName("lastLastPlaced").length != 0){
-                document.getElementsByClassName("lastLastPlaced")[0].classList.remove("lastLastPlaced");
+            if(idx === array.length - 1 && elementId == "opponent"){
+                addToLog("You Attacked: " + (attack.location.row-1) + ", " + (attack.location.column));
+                if(document.getElementsByClassName("lastLastPlaced").length != 0){
+                    document.getElementsByClassName("lastLastPlaced")[0].classList.remove("lastLastPlaced");
+                }
+                document.getElementById("opponent").rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("lastLastPlaced");
             }
-            document.getElementById("opponent").rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("lastLastPlaced");
         }
-
     });
 }
 
@@ -156,9 +157,7 @@ function redrawGrid() {
         document.getElementById("setupWindow1").style.display = "none";
         document.getElementById("setupWindow2").style.display = "none";
     }
-    if(document.getElementById("sonarContainer").lastChild.id === "cancelSonarButton"){
-        document.getElementById("sonarContainer").removeChild(document.getElementById("sonarContainer").lastChild);
-    }
+  
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
     makeGrid(document.getElementById("opponent"), false);
@@ -262,8 +261,9 @@ function cellClick() {
 
     else if(sonarOn) {
         numSonar--;
-        sonarOn = false;
         redrawGrid();
+        sonarOn = false;
+        sonarFunc(row, col);
     }
     else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
@@ -285,6 +285,49 @@ function sendXhr(method, url, data, handler) {
     req.open(method, url);
     req.setRequestHeader("Content-Type", "application/json");
     req.send(JSON.stringify(data));
+}
+
+function sonarFunc(row, col) {
+
+    var colIM = col.charCodeAt(0) - 1;
+    var colIP = col.charCodeAt(0) + 1;
+    sonarFunc2(row + 1, col);
+    sonarFunc2(row + 1, String.fromCharCode(colIM));
+    sonarFunc2(row + 1, String.fromCharCode(colIP));
+    sonarFunc2(row + 2, col);
+    sonarFunc2(row - 1, col);
+    sonarFunc2(row - 1, String.fromCharCode(colIM));
+    sonarFunc2(row - 1, String.fromCharCode(colIP));
+    sonarFunc2(row - 2, col);
+    sonarFunc2(row, String.fromCharCode(colIM));
+    sonarFunc2(row, String.fromCharCode(colIP));
+    colIM--;
+    colIP++;
+    sonarFunc2(row, String.fromCharCode(colIM));
+    sonarFunc2(row, String.fromCharCode(colIP));
+    sonarFunc2(row, col);
+
+}
+function sonarFunc2(x, y) {
+    console.log(x);
+    console.log(y);
+    if(!(x > 0 && x < 11 && y > '@' && y < 'K'))
+        return;
+    console.log(x);
+    console.log(y);
+    let table = document.getElementById("opponent");
+    sendXhr("POST", "/sonar", {game: game, x: x, y: y}, function(data) {
+        game = data;
+        console.log("nuts");
+        let className;
+        if(game.opponentsBoard.sonarList)
+            className = "revealed";
+        else
+            className = "empty";
+        let yInt = y.charCodeAt(0) -'@'.charCodeAt(0);
+        if(!(document.getElementById('opponent').rows[x-1].cells[yInt].classList.contains("miss")) && !(document.getElementById('opponent').rows[x-1].cells[yInt].classList.contains("hit")) && !(document.getElementById('opponent').rows[x-1].cells[yInt].classList.contains("sink")))
+            document.getElementById("opponent").rows[x-1].cells[yInt].classList.add(className);
+    })
 }
 
 function place(size) {

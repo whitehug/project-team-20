@@ -10,6 +10,7 @@ public class Board {
 
 	@JsonProperty private List<Ship>  ships;
 	@JsonProperty private List<Result>  attacks;
+	@JsonProperty private boolean sonarList;
 	@JsonProperty private Point dimensions;
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -17,7 +18,19 @@ public class Board {
 	public Board() {
 		this.dimensions = new Point(10, 10);
 		this.ships = new ArrayList<>();
+		this.sonarList = false;
 		this.attacks = new ArrayList<>();
+	}
+
+	public void sonar(int x, char y) {
+		this.sonarList = false;
+		for (Ship ship : this.ships) {
+			for (Square square : ship.getOccupiedSquares()) {
+				if (square.getRow() == x && square.getColumn() == y) {
+					this.sonarList = true;
+				}
+			}
+		}
 	}
 
 	public boolean containsSquare(Square s){
@@ -160,8 +173,7 @@ public class Board {
 		this.attacks = attacks;
 	}
 
-	public Point getDimensions(){
+	public Point getDimensions() {
 		return this.dimensions;
 	}
-
 }

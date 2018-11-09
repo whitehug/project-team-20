@@ -45,6 +45,13 @@ public class ApplicationController {
         }
     }
 
+    public Result sonar(Context context, SonarGameAction g) {
+        System.out.println("hey");
+        Game game = g.getGame();
+        game.sonar(g.getActionRow(), g.getActionColumn());
+        return Results.json().render(game);
+    }
+
     public Result attack(Context context, AttackGameAction g) {
         Game game = g.getGame();
         boolean result = game.attack(g.getActionRow(), g.getActionColumn());

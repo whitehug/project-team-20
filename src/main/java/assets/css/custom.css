@@ -229,6 +229,14 @@ td.identifier:hover{
     filter: grayscale(70%);
 }
 
+.empty {
+    background-color: grey;
+}
+
+.revealed {
+    background-color: black;
+}
+
 h1 {
     text-align: center;
 }
