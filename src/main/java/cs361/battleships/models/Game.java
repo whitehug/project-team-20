@@ -16,10 +16,6 @@ public class Game {
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-    public void sonar(int x, char y) {
-        opponentsBoard.sonar(x, y);
-    }
-
     public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
         boolean successful = playersBoard.placeShip(ship, x, y, isVertical);
         if (!successful) {
