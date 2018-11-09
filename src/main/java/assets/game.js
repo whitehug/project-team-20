@@ -3,6 +3,9 @@ var placedShips = 0;
 var game;
 var shipType;
 var vertical;
+var numSonar = 2
+var sonarEnable = false;
+var sonarOn = false;
 
 function addToLog(toAdd){
     let element = document.createElement('h2');
@@ -15,6 +18,50 @@ function addToLog(toAdd){
 function scrollBottom(){
     let scroll = document.getElementById("scrollbar");
     scroll.scrollTo(0,scroll.scrollHeight);
+}
+
+function sonarButtonSetup() {
+    let container = document.getElementById("sonarContainer");
+    while(container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
+    for(i=0; i<3; i++) {
+        let sonar = document.createElement('button');
+        sonar.classList.add('sonarButton');
+        sonar.classList.add('sonarDisabled');
+        container.appendChild(sonar);
+    }
+    if(numSonar > 0) {
+        document.getElementsByClassName('sonarButton')[1].classList.add('chosen');
+        document.getElementsByClassName('sonarButton')[1].classList.remove('sonarDisabled');
+        document.getElementsByClassName('sonarButton')[1].innerHTML = "Attack";
+        document.getElementsByClassName('sonarButton')[1].id = "cancelSonarButton";
+    }
+
+    for(i=0; i<(2*numSonar); i++) {
+        let sonar = document.getElementsByClassName('sonarButton')[i];
+        sonar.classList.remove('sonarDisabled');
+        sonar.addEventListener("click", function(e) {
+
+                for(j=0; j<3; j++) {
+                    document.getElementsByClassName('sonarButton')[j].classList.remove('chosen');
+                }
+
+                this.classList.add('chosen');
+                sonarOn = true;
+                let container = document.getElementById("sonarContainer");
+                let cancelButton = container.lastChild.previousSibling;
+                cancelButton.classList.remove('sonarDisabled');
+                cancelButton.addEventListener("click", function(e) {
+                    for(j=0; j<3; j++)
+                        document.getElementsByClassName('sonarButton')[j].classList.remove('chosen');
+                    this.classList.add('chosen');
+                    sonarOn = false;
+                });
+            });
+        sonar.innerHTML = "Sonar";
+        i++;
+    }
 }
 
 function makeGrid(table, isPlayer) {
@@ -65,12 +112,17 @@ function markHits(board, elementId, surrenderText) {
             className = "miss";
         else if (attack.result === "HIT")
             className = "hit";
-        else if (attack.result === "SUNK")
-            className = "sink"
+        else if (attack.result === "SUNK") {
+            className = "sink";
+            sonarEnable = true;
+        }
         else if (attack.result === "SURRENDER"){
             addToLog(surrenderText);
             addToLog("<a href=\".\"><h2>Play Again?</h2></a>");
         }
+
+        if(sonarEnable && surrenderText === "You won the game")
+            sonarButtonSetup();
 
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add(className);
         if(idx === array.length - 1 && elementId == "player"){
@@ -104,7 +156,9 @@ function redrawGrid() {
         document.getElementById("setupWindow1").style.display = "none";
         document.getElementById("setupWindow2").style.display = "none";
     }
-
+    if(document.getElementById("sonarContainer").lastChild.id === "cancelSonarButton"){
+        document.getElementById("sonarContainer").removeChild(document.getElementById("sonarContainer").lastChild);
+    }
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
     makeGrid(document.getElementById("opponent"), false);
@@ -116,6 +170,7 @@ function redrawGrid() {
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("occupied");
     }));
+
     markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.playersBoard, "player", "You lost the game");
 }
@@ -203,7 +258,14 @@ function cellClick() {
             }
         });
 
-    } else {
+    }
+
+    else if(sonarOn) {
+        numSonar--;
+        sonarOn = false;
+        redrawGrid();
+    }
+    else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
             redrawGrid();
