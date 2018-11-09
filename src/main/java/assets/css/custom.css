@@ -183,7 +183,7 @@ td.identifier:hover{
 }
 
 .sink {
-    background-color: red !important;
+    background-color: red;
     -webkit-filter: grayscale(30%); /* Safari */
     filter: grayscale(30%);
 }

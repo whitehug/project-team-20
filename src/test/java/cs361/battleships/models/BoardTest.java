@@ -11,7 +11,7 @@ import static org.junit.Assert.assertFalse;
 
 public class BoardTest {
 
-    /*@Test
+    @Test
     public void testInvalidPlacement() {
         Board board = new Board();
         assertFalse(board.placeShip(new Ship("MINESWEEPER"), 11, 'C', true));
@@ -149,7 +149,7 @@ public class BoardTest {
         attacks.add(new Result());
         b.setAttacks(attacks);
         assertTrue(attacks == b.getAttacks());
-    }*/
+    }
 
 
 }

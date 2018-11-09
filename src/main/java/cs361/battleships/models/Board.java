@@ -1,10 +1,15 @@
 package cs361.battleships.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.*;
+
+import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Board {
 
@@ -82,64 +87,79 @@ public class Board {
 		return false;
 	}
 
-
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Result attack(int x, char y) {
 		Result r = new Result();
-		r.setLocation(new Square(x, y));
+		Square sq = new Square(x, y);
+		r.setLocation(sq);
 
 		//check within bounds
-		int iny = y - 'a';
+		int iny;
 		if(y < 'a'){
 			iny = y - 'A';
+		}
+		else{
+			iny = y - 'a';
 		}
 		if (!(x > 0 && x <= this.dimensions.x && iny >= 0 && iny < this.dimensions.y)) {
 			r.setResult(AtackStatus.INVALID);
 			this.attacks.add(r);
 			return r;
 		}
-
-		for(Ship s : this.ships){
-			for(ShipPiece sp : s.getOccupiedSquares()){
-				if(sp.getRow() == x && sp.getColumn() == y){
-					if(sp.damage() && sp.captainsQuarters){
-						for(Ship s2 : this.ships){
-						    //check for if all ships are sunk
-							boolean sunk = false;
-							for(ShipPiece sp2 : s2.getOccupiedSquares()) {
-								if(sp2.getSunk()){
-									sunk = true;
-								}
-							}
-							if(!sunk){
-								r.setResult(AtackStatus.SUNK);
-								r.setShip(s);
-								this.attacks.add(r);
-								return r;
-							}
-						}
-						//if all sunk surrender
-						r.setResult(AtackStatus.SURRENDER);
-						r.setShip(s);
-						this.attacks.add(r);
-						return r;
-					}
-					else{
-					    //just a normal hit
-						r.setResult(AtackStatus.HIT);
-						r.setShip(s);
-						this.attacks.add(r);
-						return r;
-					}
-				}
+		for(Result atks : this.attacks){
+			if(atks.getLocation().getRow() == x && atks.getLocation().getColumn() == y){
+				r.setResult(AtackStatus.INVALID);
+				this.attacks.add(r);
+				return r;
 			}
 		}
 
 		//default cause
 		r.setResult(AtackStatus.MISS);
 		this.attacks.add(r);
+
+		//set hit
+		Ship s = null;
+		for (Ship ship : this.ships) {
+			for(Square square : ship.getOccupiedSquares()){
+				if(square.getRow() == x && square.getColumn() == y){
+					r.setResult(AtackStatus.HIT);
+					s = ship;
+				}
+			}
+		}
+
+		//check if boat sunk and change
+		boolean sunk = true;
+		if(s != null) {
+			for (Square square : s.getOccupiedSquares()) {
+				boolean containedHit = false;
+				for (Result res : this.attacks) {
+					if (res.getResult() == AtackStatus.HIT && res.getLocation().getRow() == square.getRow() && res.getLocation().getColumn() == square.getColumn()) {
+						containedHit = true;
+					}
+				}
+				if (!containedHit) {
+					sunk = false;
+				}
+			}
+			if (sunk) {
+				r.setResult(AtackStatus.SUNK);
+			}
+
+			//check if surrender
+			int countSunk = 0;
+			for (Result at : this.attacks) {
+				if (at.getResult() == AtackStatus.SUNK) {
+					countSunk++;
+				}
+			}
+			if (countSunk == this.ships.size()) {
+				r.setResult(AtackStatus.SURRENDER);
+			}
+		}
 
 		return r;
 	}

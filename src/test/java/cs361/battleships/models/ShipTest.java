@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 
 public class ShipTest {
 
-    /*private List<Square> occupiedSquares;
+    private List<Square> occupiedSquares;
 
     @Test
     public void testMinesweeperCreation() {
@@ -59,5 +59,5 @@ public class ShipTest {
         ship.addOccupiedSquares(square);
         assertTrue(ship.getOccupiedSquares().contains(square));
         assertTrue(ship.getCapacity() == 5);
-    }*/
+    }
 }
