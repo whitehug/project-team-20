@@ -4,19 +4,6 @@ var game;
 var shipType;
 var vertical;
 
-function addToLog(toAdd){
-    let element = document.createElement('h2');
-    element.innerHTML = toAdd;
-    let scroll = document.getElementById("scrollbar");
-    scroll.appendChild(element);
-    scrollBottom();
-}
-
-function scrollBottom(){
-    let scroll = document.getElementById("scrollbar");
-    scroll.scrollTo(0,scroll.scrollHeight);
-}
-
 function makeGrid(table, isPlayer) {
     for (i=0; i<11; i++) {
         let row = document.createElement('tr');
@@ -59,48 +46,33 @@ function makeGrid(table, isPlayer) {
 }
 
 function markHits(board, elementId, surrenderText) {
-    board.attacks.forEach((attack, idx, array) => {
+    board.attacks.forEach((attack) => {
         let className;
         if (attack.result === "MISS")
             className = "miss";
         else if (attack.result === "HIT")
             className = "hit";
         else if (attack.result === "SUNK")
-            className = "sink"
-        else if (attack.result === "SURRENDER"){
-            addToLog(surrenderText);
-            addToLog("<a href=\".\"><h2>Play Again?</h2></a>");
-        }
+            className = "hit"
+        else if (attack.result === "SURRENDER")
+            alert(surrenderText);
 
+        if(document.getElementsByClassName("lastPlaced").length != 0){
+            document.getElementsByClassName("lastPlaced")[0].classList.remove("lastPlaced");
+        }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add(className);
-        if(idx === array.length - 1 && elementId == "player"){
-            addToLog("Opponent Attacked: " + (attack.location.row-1) + ", " + (attack.location.column));
-            if(document.getElementsByClassName("lastPlaced").length != 0){
-                document.getElementsByClassName("lastPlaced")[0].classList.remove("lastPlaced");
-            }
-            document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("lastPlaced");
-        }
-        if(idx === array.length - 1 && elementId == "opponent"){
-            addToLog("You Attacked: " + (attack.location.row-1) + ", " + (attack.location.column));
-            if(document.getElementsByClassName("lastLastPlaced").length != 0){
-                document.getElementsByClassName("lastLastPlaced")[0].classList.remove("lastLastPlaced");
-            }
-            document.getElementById("opponent").rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("lastLastPlaced");
-        }
-
+        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("lastPlaced");
     });
 }
 
 function redrawGrid() {
     if(isSetup){
         document.getElementById("opContainer").style.display = "none";
-        document.getElementById("battleLog").style.display = "none";
         document.getElementById("setupWindow1").style.display = "block";
         document.getElementById("setupWindow2").style.display = "block";
     }
     else{
         document.getElementById("opContainer").style.display = "block";
-        document.getElementById("battleLog").style.display = "block";
         document.getElementById("setupWindow1").style.display = "none";
         document.getElementById("setupWindow2").style.display = "none";
     }
@@ -124,7 +96,7 @@ var oldListener;
 function registerCellListener(f) {
     let el = document.getElementById("player");
     for (i=0; i<10; i++) {
-        for (j=0; j<11; j++) {
+        for (j=0; j<10; j++) {
             let cell = el.rows[i].cells[j];
             cell.removeEventListener("mouseover", oldListener);
             cell.removeEventListener("mouseout", oldListener);
@@ -145,57 +117,6 @@ function cellClick() {
 
             redrawGrid();
             placedShips++;
-
-            if(shipType === "MINESWEEPER") {
-                document.getElementById("place_minesweeper").classList.add("disabled");
-                document.getElementById("place_minesweeper").disabled = true;
-                document.getElementById("place_minesweeper_v").classList.add("disabled");
-                document.getElementById("place_minesweeper_v").disabled = true;
-                if(document.getElementById("place_destroyer").disabled == false) {
-                    document.getElementById("place_destroyer").focus();
-                    registerCellListener(place(3));
-                    shipType = "DESTROYER";
-                }
-                else {
-                    document.getElementById("place_battleship").focus();
-                    registerCellListener(place(4));
-                    shipType = "BATTLESHIP";
-                }
-            }
-            else if(shipType === "DESTROYER") {
-                document.getElementById("place_destroyer").classList.add("disabled");
-                document.getElementById("place_destroyer").disabled = true;
-                document.getElementById("place_destroyer_v").classList.add("disabled");
-                document.getElementById("place_destroyer_v").disabled = true;
-
-                 if(document.getElementById("place_battleship").disabled == false) {
-                    document.getElementById("place_battleship").focus();
-                    registerCellListener(place(4));
-                    shipType = "BATTLESHIP";
-                 }
-                 else {
-                    document.getElementById("place_minesweeper").focus();
-                    registerCellListener(place(2));
-                    shipType = "MINESWEEPER";
-                 }
-             }
-            else {
-                document.getElementById("place_battleship").classList.add("disabled");
-                document.getElementById("place_battleship_v").classList.add("disabled");
-                document.getElementById("place_battleship").disabled = true;
-                document.getElementById("place_battleship_v").disabled = true;
-
-                 if(document.getElementById("place_minesweeper").disabled == false) {
-                    document.getElementById("place_minesweeper").focus();
-                    registerCellListener(place(2));
-                    shipType = "MINESWEEPER";
-                 }
-                 else {
-                     document.getElementById("place_destroyer").focus();
-                     registerCellListener(place(4));
-                     shipType = "DESTROYER";
-                }
-            }
             if (placedShips == 3) {
                 isSetup = false;
                 redrawGrid();
@@ -207,6 +128,10 @@ function cellClick() {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
             redrawGrid();
+            if(document.getElementsByClassName("lastLastPlaced").length != 0){
+                document.getElementsByClassName("lastLastPlaced")[0].classList.remove("lastLastPlaced");
+            }
+            document.getElementById("opponent").rows[row-1].cells[col.charCodeAt(0) - '@'.charCodeAt(0)].classList.add("lastLastPlaced");
         })
     }
 }
@@ -215,7 +140,7 @@ function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
-            addToLog("Not a valid square!")
+            alert("Cannot complete the action");
             return;
         }
         handler(JSON.parse(req.responseText));
@@ -229,8 +154,9 @@ function place(size) {
     return function() {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
+        vertical = document.getElementById("is_vertical").checked;
         let table = document.getElementById("player");
-        for (let i=0; i<size && (vertical ? 0 <= i + row && i + row < 10: 0 < i + col && i + col < 11) && i + col != 0; i++) {
+        for (let i=0; i<size && (vertical ? 0 < i + row && i + row < 10: 0 < i + col && i + col < 11); i++) {
             let cell;
             if(vertical) {
                 let tableRow = table.rows[row+i];
@@ -256,33 +182,15 @@ function initGame() {
     makeGrid(document.getElementById("player"), true);
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
-        registerCellListener(place(2));
-        vertical = false;
+       registerCellListener(place(2));
     });
     document.getElementById("place_destroyer").addEventListener("click", function(e) {
         shipType = "DESTROYER";
        registerCellListener(place(3));
-       vertical = false;
     });
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
-        registerCellListener(place(4));
-        vertical = false;
-    });
-    document.getElementById("place_minesweeper_v").addEventListener("click", function(e) {
-        shipType = "MINESWEEPER";
-        registerCellListener(place(2));
-        vertical = true;
-    });
-    document.getElementById("place_destroyer_v").addEventListener("click", function(e) {
-        shipType = "DESTROYER";
-        registerCellListener(place(3));
-        vertical = true;
-    });
-    document.getElementById("place_battleship_v").addEventListener("click", function(e) {
-        shipType = "BATTLESHIP";
-        registerCellListener(place(4));
-        vertical = true;
+       registerCellListener(place(4));
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;

@@ -14,7 +14,7 @@ public class BoardTest {
     @Test
     public void testInvalidPlacement() {
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 11, 'C', true));
+        assertFalse(board.placeShip(new Minesweeper(), 11, 'C', true));
     }
 
     @Test
@@ -24,10 +24,10 @@ public class BoardTest {
         for(int i = 1; i < 10; i++) {
             for(int j = 0; j < 9; j++) {
                 Board board1 = new Board();
-                assertTrue(board1.placeShip(new Ship("MINESWEEPER"), i, (char)(j + 'A'), false));
+                assertTrue(board1.placeShip(new Minesweeper(), i, (char)(j + 'A'), false));
 
                 Board board2 = new Board();
-                assertTrue(board2.placeShip(new Ship("MINESWEEPER"), i, (char)(j + 'A'), true));
+                assertTrue(board2.placeShip(new Minesweeper(), i, (char)(j + 'A'), true));
             }
         }
 
@@ -38,13 +38,13 @@ public class BoardTest {
         Board board = new Board();
         for(int i = 1; i <= board.getDimensions().x; i++) {
             for(int j = 0; j < board.getDimensions().y; j+=2) {
-                assertTrue(board.placeShip(new Ship("MINESWEEPER"), i, (char)(j + 'A'), false));
+                assertTrue(board.placeShip(new Minesweeper(), i, (char)(j + 'A'), false));
             }
         }
 
         for(int i = 1; i <= 10; i+=2) {
             for(int j = 0; j < 10; j++) {
-                assertFalse(board.placeShip(new Ship("MINESWEEPER"), i, (char)(j + 'A'), true));
+                assertFalse(board.placeShip(new Minesweeper(), i, (char)(j + 'A'), true));
             }
         }
     }
@@ -52,7 +52,7 @@ public class BoardTest {
     @Test
     public void testContainesSquare() {
         Board board = new Board();
-        board.placeShip(new Ship("MINESWEEPER"), 7, 'C', false);
+        board.placeShip(new Minesweeper(), 7, 'C', false);
         Square square = new Square(7, 'C');
         assertTrue(board.containsSquare(square));
     }
@@ -60,7 +60,7 @@ public class BoardTest {
     @Test
     public void testAttackMiss(){
         Board board = new Board();
-        board.placeShip(new Ship("MINESWEEPER"), 7, 'C', false);
+        board.placeShip(new Minesweeper(), 7, 'C', false);
         for(int i = 1; i <= board.getDimensions().x; i++){
             for(int j = 0; j < board.getDimensions().y; j++){
                 Result r = board.attack(i, (char)(j + 'A'));
@@ -74,8 +74,8 @@ public class BoardTest {
     @Test
     public void testAttackHitSunkSurrenderSmall(){
         Board board = new Board();
-        board.placeShip(new Ship("MINESWEEPER"), 7, 'C', false);
-        board.placeShip(new Ship("MINESWEEPER"), 6, 'C', false);
+        board.placeShip(new Minesweeper(), 7, 'C', false);
+        board.placeShip(new Minesweeper(), 6, 'C', false);
         assertTrue(AtackStatus.HIT == board.attack(7, 'C').getResult());
         assertTrue(AtackStatus.SUNK == board.attack(7, 'D').getResult());
         assertTrue(AtackStatus.HIT == board.attack(6, 'C').getResult());
@@ -95,7 +95,7 @@ public class BoardTest {
         Board board = new Board();
         for(int i = 1; i <= board.getDimensions().x; i++) {
             for(int j = 0; j < board.getDimensions().y - 4 + 1; j+=4) {
-                assertTrue(board.placeShip(new Ship("BATTLESHIP"), i, (char)(j + 'A'), false));
+                assertTrue(board.placeShip(new Battleship(), i, (char)(j + 'A'), false));
             }
         }
 
@@ -135,8 +135,8 @@ public class BoardTest {
     public void testGetShips(){
         Board b = new Board();
         List<Ship> ships = new ArrayList<>();
-        ships.add(new Ship("DESTROYER"));
-        ships.add(new Ship("MINESWEEPER"));
+        ships.add(new Destroyer());
+        ships.add(new Battleship());
         b.setShips(ships);
         assertTrue(ships == b.getShips());
     }

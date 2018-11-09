@@ -11,13 +11,13 @@ public class GameTest {
     public void TestBadInputPlaceShip() {
 
         Game game = new Game();
-        assertFalse(game.placeShip(new Ship("BATTLESHIP"), 0, 'Z', true));
+        assertFalse(game.placeShip(new Battleship(), 0, 'Z', true));
     }
     @Test
 	public void TestGoodInputPlaceShip() {
 
         Game game = new Game();
-        for (int i = 1; i < 11; i++) assertTrue(game.placeShip(new Ship("BATTLESHIP"), i, 'F', false));
+        for (int i = 1; i < 11; i++) assertTrue(game.placeShip(new Battleship(), i, 'F', false));
 
     }
 	@Test

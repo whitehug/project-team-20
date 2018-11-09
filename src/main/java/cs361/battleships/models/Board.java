@@ -53,7 +53,6 @@ public class Board {
 		//within bounds
 		if(!isVertical) {
 			if (x > 0 && x <= this.dimensions.x && iny >= 0 && iny < this.dimensions.y - shipLength + 1) {
-				List<Square> sqAdd = new ArrayList<>();
 				for(int i = 0; i < shipLength; i++){
 					//add squares to ship
 					Square s = new Square(x, (char)(iny + 'A' + i));
@@ -61,12 +60,8 @@ public class Board {
 					if(this.containsSquare(s)) {
 						return false;
 					}
-					sqAdd.add(s);
-
 				}
-				for(Square adding : sqAdd){
-					ship.addOccupiedSquares(adding);
-				}
+				ship.placeShip(x, y, isVertical);
 				ships.add(ship);
 				return true;
 			}
@@ -81,12 +76,9 @@ public class Board {
 					if(this.containsSquare(s)) {
 						return false;
 					}
-					sqAdd.add(s);
 
 				}
-				for(Square adding : sqAdd){
-					ship.addOccupiedSquares(adding);
-				}
+				ship.placeShip(x, y, isVertical);
 				ships.add(ship);
 				return true;
 			}

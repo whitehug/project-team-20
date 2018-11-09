@@ -18,7 +18,7 @@ public class ResultTest {
 
     @Test
     public void testShip() {
-        Ship s = new Ship("DESTROYER");
+        Ship s = new Destroyer();
         Result r = new Result();
         r.setShip(s);
         assertTrue(r.getShip() == s);
