@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @SuppressWarnings("unused")
 public class Square {
 
-	private int row;
-	private char column;
+	protected int row;
+	protected char column;
 
 	public Square(){
 		this.row = 0;

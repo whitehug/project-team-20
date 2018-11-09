@@ -18,11 +18,12 @@ public class Game {
 	 */
     public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
         boolean successful = playersBoard.placeShip(ship, x, y, isVertical);
-        if (!successful)
+        if (!successful) {
             return false;
+        }
 
         boolean opponentPlacedSuccessfully;
-        Ship opponant = new Ship(ship.getCapacity() == 2 ? "MINESWEEPER" : ship.getCapacity() == 3 ? "DESTROYER" : ship.getCapacity() == 4 ? "BATTLESHIP" : "");
+        Ship opponant = ship.cloneType();
         do {
             // AI places random ships, so it might try and place overlapping ships
             // let it try until it gets it right
