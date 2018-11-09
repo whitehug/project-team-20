@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 public class GameTest {
 
-    @Test
+    /*@Test
     public void TestBadInputPlaceShip() {
 
         Game game = new Game();
@@ -31,5 +31,5 @@ public class GameTest {
         Game game = new Game();
         for(int i=1; i<11; i++) assertTrue(game.attack( i,'D'));
 
-    }
+    }*/
 }
