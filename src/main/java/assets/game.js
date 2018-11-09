@@ -117,7 +117,6 @@ function markHits(board, elementId, surrenderText) {
             sonarEnable = true;
         }
         else if (attack.result === "SURRENDER"){
-            className = "surrender";
             addToLog(surrenderText);
             addToLog("<a href=\".\"><h2>Play Again?</h2></a>");
         }
