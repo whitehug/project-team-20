@@ -181,7 +181,9 @@ td.identifier:hover{
 }
 
 .sink {
-    background-color: red;
+    background-color: red !important;
+    -webkit-filter: grayscale(30%); /* Safari */
+    filter: grayscale(30%);
 }
 
 .miss {

@@ -1,8 +1,8 @@
 package cs361.battleships.models;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 public class ShipPiece extends Square {
-    protected int health;
-    protected boolean captainsQuarters;
+    @JsonProperty protected int health;
+    @JsonProperty protected boolean captainsQuarters;
 
     public ShipPiece(){
         super();

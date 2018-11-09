@@ -14,7 +14,28 @@ public class BoardTest {
     @Test
     public void testInvalidPlacement() {
         Board board = new Board();
-        assertFalse(board.placeShip(new Minesweeper(), 11, 'C', true));
+        assertFalse(board.placeShip(new Destroyer(), 11, 'C', true));
+    }
+
+    @Test
+    public void testValidMinesweeperPlacement() {
+        Board board = new Board();
+        assertTrue(board.placeShip(new Minesweeper(), 1, 'A', true));
+        assertTrue(board.placeShip(new Minesweeper(), 2, 'D', false));
+    }
+
+    @Test
+    public void testValidDestroyerPlacement() {
+        Board board = new Board();
+        assertTrue(board.placeShip(new Destroyer(), 1, 'A', true));
+        assertTrue(board.placeShip(new Minesweeper(), 2, 'D', false));
+    }
+
+    @Test
+    public void testValidMBattleshipPlacement() {
+        Board board = new Board();
+        assertTrue(board.placeShip(new Battleship(), 1, 'A', true));
+        assertTrue(board.placeShip(new Minesweeper(), 2, 'D', false));
     }
 
     @Test
@@ -76,10 +97,9 @@ public class BoardTest {
         Board board = new Board();
         board.placeShip(new Minesweeper(), 7, 'C', false);
         board.placeShip(new Minesweeper(), 6, 'C', false);
-        assertTrue(AtackStatus.HIT == board.attack(7, 'C').getResult());
-        assertTrue(AtackStatus.SUNK == board.attack(7, 'D').getResult());
-        assertTrue(AtackStatus.HIT == board.attack(6, 'C').getResult());
-        assertTrue(AtackStatus.SURRENDER == board.attack(6, 'D').getResult());
+        assertTrue(AtackStatus.SUNK == board.attack(7, 'C').getResult());
+        assertTrue(AtackStatus.HIT == board.attack(7, 'D').getResult());
+        assertTrue(AtackStatus.SURRENDER == board.attack(6, 'C').getResult());
     }
 
     @Test
@@ -102,33 +122,16 @@ public class BoardTest {
 
         //test every square
         for(int i = 1; i <= board.getDimensions().x; i++){
-            for(int j = 0; j < 3; j++) {
+            for(int j = 0; j < 8; j++) {
                 assertTrue(AtackStatus.HIT == board.attack(i, (char)('A' + j)).getResult());
             }
         }
-        for(int i = 1; i <= board.getDimensions().x; i++){
-                assertTrue(AtackStatus.SUNK == board.attack(i, (char)('A' + 3)).getResult());
-        }
-        for(int i = 1; i <= board.getDimensions().x; i++){
-            for(int j = 4; j < 7; j++) {
-                assertTrue(AtackStatus.HIT == board.attack(i, (char)('A' + j)).getResult());
-            }
-        }
-        for(int i = 1; i <= board.getDimensions().x - 1; i++){
-            assertTrue(AtackStatus.SUNK == board.attack(i, (char)('A' + 7)).getResult());
-        }
-        assertTrue(AtackStatus.SURRENDER == board.attack(10, (char)('A' + 7)).getResult());
         for(int i = 1; i <= board.getDimensions().x; i++) {
             for (int j = 8; j < 10; j++) {
                 assertTrue(AtackStatus.MISS == board.attack(i, (char) ('A' + j)).getResult());
             }
         }
 
-        for(int i = 1; i <= board.getDimensions().x; i++) {
-            for (int j = 0; j < 10; j++) {
-                assertTrue(AtackStatus.INVALID == board.attack(i, (char) ('A' + j)).getResult());
-            }
-        }
     }
 
     @Test

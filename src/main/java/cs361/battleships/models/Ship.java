@@ -25,9 +25,7 @@ public class Ship {
 		return this.occupiedSquares;
 	}
 
-	public void placeShip(int x, char y, boolean isVertical){
-
-	}
+	public void placeShip(int x, char y, boolean isVertical){};
 
 	public int getCapacity(){
 		return this.capacity;

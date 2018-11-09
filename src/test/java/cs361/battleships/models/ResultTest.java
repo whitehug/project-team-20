@@ -32,5 +32,4 @@ public class ResultTest {
         assertTrue(r.getLocation() == sq);
 
     }
-
 }

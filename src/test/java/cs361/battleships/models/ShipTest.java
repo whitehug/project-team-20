@@ -35,4 +35,16 @@ public class ShipTest {
         Ship ship = new Ship();
         assertTrue(ship.getCapacity() == 0);
     }
+
+    @Test
+    public void testCloneType() {
+        Ship ship = new Ship();
+        assertTrue(ship.cloneType() instanceof Ship);
+        ship = new Minesweeper();
+        assertTrue(ship.cloneType() instanceof Minesweeper);
+        ship = new Destroyer();
+        assertTrue(ship.cloneType() instanceof Destroyer);
+        ship = new Battleship();
+        assertTrue(ship.cloneType() instanceof Battleship);
+    }
 }

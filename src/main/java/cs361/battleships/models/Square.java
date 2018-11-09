@@ -9,8 +9,8 @@ public class Square {
 	protected char column;
 
 	public Square(){
-		this.row = 0;
-		this.column = 0;
+		this.row = 1;
+		this.column = 'A';
 	}
 
 	public Square(int row, char column) {
