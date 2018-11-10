@@ -50,6 +50,13 @@
 
 button:focus {
     outline: none;
+}
+
+.vertical:focus {
+    background-color: grey;
+}
+
+.horizontal:focus {
     background-color: grey;
 }
 
@@ -57,19 +64,47 @@ button:focus {
     background-color: black;
 }
 
-button {
+#sonarContainer {
+    display: flex;
+    align-content: center;
+    justify-content: left;
+}
+
+.sonarButton {
+    font-size: 18px;
+    margin: 8px 10px 0px 10px;
+    width: 74px;
+    border: 1px solid black;
+    background-color: white;
+}
+
+.sonarDisabled {
+    border: none;
+}
+
+.chosen {
+    background-color: grey;
+}
+#cancelSonarButton {
+    border: 1px solid black;
+}
+
+.vertical {
     border: 2px solid black;
     background-color: white;
     text-align: left;
     text-decoration: none;
     padding: 7px 0px;
     margin: 7px 0px 7px 7px;
-}
-
-.vertical {
     width: 40px;
 }
 .horizontal {
+    border: 2px solid black;
+    background-color: white;
+    text-align: left;
+    text-decoration: none;
+    padding: 7px 0px;
+    margin: 7px 0px 7px 7px;
     height: 40px;
 }
 #verticalContainer {

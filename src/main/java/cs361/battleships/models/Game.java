@@ -32,7 +32,6 @@ public class Game {
 
         return true;
     }
-
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
