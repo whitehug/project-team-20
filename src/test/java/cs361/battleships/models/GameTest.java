@@ -8,6 +8,11 @@ import static org.junit.Assert.assertTrue;
 public class GameTest {
 
     @Test
+    public void TestSonarMiss() {
+        Game game = new Game();
+        assertFalse(game.sonar(3, 'B'));
+    }
+    @Test
     public void TestBadInputPlaceShip() {
 
         Game game = new Game();

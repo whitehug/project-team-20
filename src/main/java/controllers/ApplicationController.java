@@ -11,6 +11,12 @@ import javax.swing.*;
 @Singleton
 public class ApplicationController {
 
+    public Result sonar(Context context, SonarGameAction g) {
+        Game game = g.getGame();
+        game.sonar(g.getActionRow(), g.getActionColumn());
+        return Results.json().render(game);
+    }
+
     public Result index() {
         return Results.html();
     }

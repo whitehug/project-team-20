@@ -1,6 +1,3 @@
-/* Add additional stylesheets below
--------------------------------------------------- */
-
 .battleGridFlex{
     display: flex;
     align-content: center;
@@ -213,6 +210,8 @@ td.identifier:hover{
 
 .hit {
     background-color: orange;
+    -webkit-filter: grayscale(30%); /* Safari */
+    filter: grayscale(30%);
 }
 
 .sink {
@@ -225,6 +224,18 @@ td.identifier:hover{
     background-color: blue;
     -webkit-filter: grayscale(70%); /* Safari */
     filter: grayscale(70%);
+}
+
+.empty {
+    background-color: grey;
+}
+
+.revealed {
+    background-color: black;
+}
+
+h1 {
+    text-align: center;
 }
 
 .lastPlaced{

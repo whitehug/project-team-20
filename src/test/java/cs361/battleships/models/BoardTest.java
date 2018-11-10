@@ -12,6 +12,22 @@ import static org.junit.Assert.assertFalse;
 public class BoardTest {
 
     @Test
+    public void testRevealSonar() {
+        Board board = new Board();
+        board.placeShip(new Minesweeper(), 5, 'D', true);
+        assertTrue(board.sonar(5, 'D'));
+    }
+
+    @Test
+    public void testMissSonar() {
+        Board board = new Board();
+        board.placeShip(new Battleship(), 5, 'D', true);
+        board.placeShip(new Minesweeper(), 5, 'E', true);
+        board.placeShip(new Battleship(), 5, 'F', true);
+        board.placeShip(new Minesweeper(), 8, 'E', true);
+        assertFalse(board.sonar(7, 'E'));
+    }
+    @Test
     public void testInvalidPlacement() {
         Board board = new Board();
         assertFalse(board.placeShip(new Destroyer(), 11, 'C', true));
