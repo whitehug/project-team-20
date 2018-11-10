@@ -220,6 +220,12 @@ td.identifier:hover{
     filter: grayscale(30%);
 }
 
+.surrender {
+    background-color: red !important;
+    -webkit-filter: grayscale(30%); /* Safari */
+    filter: grayscale(30%);
+}
+
 .miss {
     background-color: blue;
     -webkit-filter: grayscale(70%); /* Safari */
