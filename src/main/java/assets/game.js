@@ -113,17 +113,17 @@ function markHits(board, elementId, surrenderText) {
             className = "miss";
         else if (attack.result === "HIT")
             className = "hit";
-        else if (attack.result === "SUNK") {
+        else if (attack.result === "SUNK")
             className = "sink";
-            sonarEnable = true;
-        }
         else if (attack.result === "SURRENDER"){
             className = "surrender";
             addToLog(surrenderText);
             addToLog("<a href=\".\"><h2>Play Again?</h2></a>");
         }
 
-        if(sonarEnable && surrenderText === "You won the game")
+        if(attack.result === "SUNK" && surrenderText === "You won the game")
+            sonarEnable = true;
+        if(sonarEnable)
             sonarButtonSetup();
 
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - '@'.charCodeAt(0)].classList.add(className);
@@ -290,27 +290,32 @@ function sendXhr(method, url, data, handler) {
 }
 
 function sonarFunc(row, col) {
-
+    if(numSonar == 1)
+        addToLog("You Used Your First Sonar Pulse");
+    else
+        addToLog("You Used Your Last Sonar Pulse");
     var colIM = col.charCodeAt(0) - 1;
     var colIP = col.charCodeAt(0) + 1;
-    sonarFunc2(row + 1, col);
-    sonarFunc2(row + 1, String.fromCharCode(colIM));
-    sonarFunc2(row + 1, String.fromCharCode(colIP));
-    sonarFunc2(row + 2, col);
-    sonarFunc2(row - 1, col);
-    sonarFunc2(row - 1, String.fromCharCode(colIM));
-    sonarFunc2(row - 1, String.fromCharCode(colIP));
-    sonarFunc2(row - 2, col);
-    sonarFunc2(row, String.fromCharCode(colIM));
-    sonarFunc2(row, String.fromCharCode(colIP));
+    sonarFunc2(row + 1, col, false);
+    sonarFunc2(row + 1, String.fromCharCode(colIM), false);
+    sonarFunc2(row + 1, String.fromCharCode(colIP), false);
+    sonarFunc2(row + 2, col, false);
+    sonarFunc2(row - 1, col, false);
+    sonarFunc2(row - 1, String.fromCharCode(colIM), false);
+    sonarFunc2(row - 1, String.fromCharCode(colIP), false);
+    sonarFunc2(row - 2, col, false);
+    sonarFunc2(row, String.fromCharCode(colIM), false);
+    sonarFunc2(row, String.fromCharCode(colIP), false);
     colIM--;
     colIP++;
-    sonarFunc2(row, String.fromCharCode(colIM));
-    sonarFunc2(row, String.fromCharCode(colIP));
-    sonarFunc2(row, col);
+    sonarFunc2(row, String.fromCharCode(colIM), false);
+    sonarFunc2(row, String.fromCharCode(colIP), false);
+    sonarFunc2(row, col, true);
+
 
 }
-function sonarFunc2(x, y) {
+function sonarFunc2(x, y, print) {
+    sonarReveal = false;
     console.log(x);
     console.log(y);
     if(!(x > 0 && x < 11 && y > '@' && y < 'K'))
@@ -322,10 +327,18 @@ function sonarFunc2(x, y) {
         game = data;
         console.log("nuts");
         let className;
-        if(game.opponentsBoard.sonarList)
+        if(game.opponentsBoard.sonarList) {
+            sonarReveal = true;
             className = "revealed";
+        }
         else
             className = "empty";
+        if(print) {
+            if(sonarReveal)
+                addToLog("Looks Like You Found Something!")
+            else
+                addToLog("Nothing But Some Fish");
+        }
         let yInt = y.charCodeAt(0) -'@'.charCodeAt(0);
         if(!(document.getElementById('opponent').rows[x-1].cells[yInt].classList.contains("miss")) && !(document.getElementById('opponent').rows[x-1].cells[yInt].classList.contains("hit")) && !(document.getElementById('opponent').rows[x-1].cells[yInt].classList.contains("sink")))
             document.getElementById("opponent").rows[x-1].cells[yInt].classList.add(className);
