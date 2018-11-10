@@ -68,10 +68,12 @@ button:focus {
 }
 
 .sonarButton {
-    font-size: 18px;
+    font-size: 32px;
     margin: 8px 10px 0px 10px;
     width: 74px;
+    height: 74px;
     border: 1px solid black;
+    border-radius: 50%;
     background-color: white;
 }
 
