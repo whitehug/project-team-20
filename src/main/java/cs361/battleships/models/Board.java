@@ -120,7 +120,7 @@ public class Board {
 						    //check for if all ships are sunk
 							boolean sunk = false;
 							for(ShipPiece sp2 : s2.getOccupiedSquares()) {
-								if(sp2.getSunk()){
+								if(sp2.getSunk() && sp2.captainsQuarters){
 									sunk = true;
 								}
 							}
