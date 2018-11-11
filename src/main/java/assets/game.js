@@ -35,7 +35,7 @@ function sonarButtonSetup() {
     if(numSonar > 0) {
         document.getElementsByClassName('sonarButton')[1].classList.add('chosen');
         document.getElementsByClassName('sonarButton')[1].classList.remove('sonarDisabled');
-        document.getElementsByClassName('sonarButton')[1].innerHTML = "Attack";
+        document.getElementsByClassName('sonarButton')[1].innerHTML = "<i class='material-icons'>adjust</i>";
         document.getElementsByClassName('sonarButton')[1].id = "cancelSonarButton";
     }
 
@@ -60,7 +60,7 @@ function sonarButtonSetup() {
                     sonarOn = false;
                 });
             });
-        sonar.innerHTML = "Sonar";
+        sonar.innerHTML = "<i class='material-icons'>track_changes</i>";
         i++;
     }
 }
