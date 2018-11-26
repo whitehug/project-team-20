@@ -91,7 +91,7 @@ public class BoardTest {
         Board board = new Board();
         board.placeShip(new Minesweeper(), 7, 'C', false);
         Square square = new Square(7, 'C');
-        assertTrue(board.containsSquare(square));
+        assertTrue(board.containsSquare(square, false));
     }
 
     @Test
