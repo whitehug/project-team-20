@@ -10,11 +10,9 @@ import java.util.List;
 public class Ship {
 
 	@JsonProperty protected List<ShipPiece> occupiedSquares;
-	@JsonProperty protected int capacity;
 
 	public Ship() {
 		this.occupiedSquares = new ArrayList<>();
-		this.capacity = 0;
 	}
 
 	public Ship cloneType(){
@@ -27,8 +25,8 @@ public class Ship {
 
 	public void placeShip(int x, char y, boolean isVertical){};
 
-	public int getCapacity(){
-		return this.capacity;
+	public void clearSquare(){
+		this.occupiedSquares.clear();
 	}
 
 }

@@ -15,25 +15,36 @@ public class ShipTest {
     @Test
     public void testMinesweeperCreation() {
         Ship ship = new Minesweeper();
-        assertTrue(ship.getCapacity() == 2);
+        ship.placeShip(0,'A', false);
+        assertTrue(ship.getOccupiedSquares().size() == 2);
     }
 
     @Test
     public void testDestroyerCreation() {
         Ship ship = new Destroyer();
-        assertTrue(ship.getCapacity() == 3);
+        ship.placeShip(0,'A', false);
+        assertTrue(ship.getOccupiedSquares().size() == 3);
     }
 
     @Test
     public void testBattleshipCreation() {
         Ship ship = new Battleship();
-        assertTrue(ship.getCapacity() == 4);
+        ship.placeShip(0,'A', false);
+        assertTrue(ship.getOccupiedSquares().size() == 4);
+    }
+
+    @Test
+    public void testSubmarineCreation() {
+        Ship ship = new Submarine();
+        ship.placeShip(0,'A', false);
+        assertTrue(ship.getOccupiedSquares().size() == 5);
     }
 
     @Test
     public void testEmptyShipCreation() {
         Ship ship = new Ship();
-        assertTrue(ship.getCapacity() == 0);
+        ship.placeShip(0,'A', false);
+        assertTrue(ship.getOccupiedSquares().size() == 0);
     }
 
     @Test
@@ -46,5 +57,7 @@ public class ShipTest {
         assertTrue(ship.cloneType() instanceof Destroyer);
         ship = new Battleship();
         assertTrue(ship.cloneType() instanceof Battleship);
+        ship = new Submarine();
+        assertTrue(ship.cloneType() instanceof Submarine);
     }
 }

@@ -34,10 +34,14 @@ public class Board {
 		return this.sonarList;
 	}
 
-	public boolean containsSquare(Square s){
+	public boolean containsSquare(Square s, boolean underwater){
 		for(Ship allships : this.ships){
-			for(Square allsquares : allships.getOccupiedSquares()){
-				if(Character.toLowerCase(allsquares.getColumn()) == Character.toLowerCase(s.getColumn()) && allsquares.getRow() == s.getRow()){
+			for(ShipPiece allsquares : allships.getOccupiedSquares()){
+				if(
+						Character.toLowerCase(allsquares.getColumn()) == Character.toLowerCase(s.getColumn()) &&
+						allsquares.getRow() == s.getRow() &&
+						allsquares.getUnderwater() == underwater
+				){
 					return true;
 				}
 			}
@@ -49,48 +53,25 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-		int iny = y - 'a';
-		if(y < 'a'){
-			iny = y - 'A';
+		ship.placeShip(x, y, isVertical);
+		for(ShipPiece sp : ship.getOccupiedSquares()){
+			if(this.containsSquare(sp, sp.getUnderwater())) {
+                ship.clearSquare();
+                return false;
+            }
+            if(sp.getColumn() - 'A' < 0 || sp.getColumn() - 'A' >= this.dimensions.x){
+                System.out.println("failed to place boat");
+                ship.clearSquare();
+                return false;
+            }
+			if(sp.getRow() - 1 < 0 || sp.getRow() - 1 >= this.dimensions.y) {
+                System.out.println("failed to place boat");
+                ship.clearSquare();
+                return false;
+            }
 		}
-
-		int shipLength = ship.getCapacity();
-
-		//within bounds
-		if(!isVertical) {
-			if (x > 0 && x <= this.dimensions.x && iny >= 0 && iny < this.dimensions.y - shipLength + 1) {
-				for(int i = 0; i < shipLength; i++){
-					//add squares to ship
-					Square s = new Square(x, (char)(iny + 'A' + i));
-					//ensure no boat
-					if(this.containsSquare(s)) {
-						return false;
-					}
-				}
-				ship.placeShip(x, y, isVertical);
-				ships.add(ship);
-				return true;
-			}
-		}
-		else{
-			if (x > 0 && x <= this.dimensions.x - shipLength + 1 && iny >= 0 && iny < this.dimensions.y) {
-				List<Square> sqAdd = new ArrayList<>();
-				for(int i = 0; i < shipLength; i++){
-					//add squares to ship
-					Square s = new Square(x+i, (char)(iny + 'A'));
-					//ensure no boat
-					if(this.containsSquare(s)) {
-						return false;
-					}
-
-				}
-				ship.placeShip(x, y, isVertical);
-				ships.add(ship);
-				return true;
-			}
-		}
-
-		return false;
+		ships.add(ship);
+		return true;
 	}
 
 
@@ -114,7 +95,8 @@ public class Board {
 
 		for(Ship s : this.ships){
 			for(ShipPiece sp : s.getOccupiedSquares()){
-				if(sp.getRow() == x && sp.getColumn() == y){
+				//make sure its a surface ship
+				if(sp.getRow() == x && sp.getColumn() == y && sp.getUnderwater() == false){
 					if(sp.damage() && sp.captainsQuarters){
 						for(Ship s2 : this.ships){
 						    //check for if all ships are sunk
