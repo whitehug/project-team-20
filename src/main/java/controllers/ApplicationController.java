@@ -38,6 +38,9 @@ public class ApplicationController {
         else if(g.getShipType().equals("BATTLESHIP")){
             ship = new Battleship();
         }
+        else if(g.getShipType().equals("SUBMARINE")) {
+            ship = new Submarine();
+        }
         else{
             ship = new Minesweeper();
             System.out.println("ERROR");

@@ -207,15 +207,21 @@ function cellClick() {
                 document.getElementById("place_minesweeper").disabled = true;
                 document.getElementById("place_minesweeper_v").classList.add("disabled");
                 document.getElementById("place_minesweeper_v").disabled = true;
+
                 if(document.getElementById("place_destroyer").disabled == false) {
                     document.getElementById("place_destroyer").focus();
                     registerCellListener(place(3));
                     shipType = "DESTROYER";
                 }
-                else {
+                else if(document.getElementById("place_battleship").disabled == false){
                     document.getElementById("place_battleship").focus();
                     registerCellListener(place(4));
                     shipType = "BATTLESHIP";
+                }
+                else {
+                    document.getElementById("place_submarine").focus();
+                    registerCellListener(place(5));
+                    shipType = "SUBMARINE";
                 }
             }
             else if(shipType === "DESTROYER") {
@@ -224,35 +230,67 @@ function cellClick() {
                 document.getElementById("place_destroyer_v").classList.add("disabled");
                 document.getElementById("place_destroyer_v").disabled = true;
 
-                 if(document.getElementById("place_battleship").disabled == false) {
-                    document.getElementById("place_battleship").focus();
-                    registerCellListener(place(4));
-                    shipType = "BATTLESHIP";
-                 }
-                 else {
-                    document.getElementById("place_minesweeper").focus();
-                    registerCellListener(place(2));
-                    shipType = "MINESWEEPER";
-                 }
+                if(document.getElementById("place_battleship").disabled == false) {
+                   document.getElementById("place_battleship").focus();
+                   registerCellListener(place(4));
+                   shipType = "BATTLESHIP";
+                }
+                else if(document.getElementById("place_submarine").disabled == false){
+                   document.getElementById("place_submarine").focus();
+                   registerCellListener(place(5));
+                   shipType = "SUBMARINE";
+                }
+                else {
+                   document.getElementById("place_minesweeper").focus();
+                   registerCellListener(place(2));
+                   shipType = "MINESWEEPER";
+                }
              }
-            else {
+            else if(shipType === "BATTLESHIP"){
                 document.getElementById("place_battleship").classList.add("disabled");
                 document.getElementById("place_battleship_v").classList.add("disabled");
                 document.getElementById("place_battleship").disabled = true;
                 document.getElementById("place_battleship_v").disabled = true;
 
-                 if(document.getElementById("place_minesweeper").disabled == false) {
-                    document.getElementById("place_minesweeper").focus();
-                    registerCellListener(place(2));
-                    shipType = "MINESWEEPER";
-                 }
-                 else {
-                     document.getElementById("place_destroyer").focus();
-                     registerCellListener(place(4));
-                     shipType = "DESTROYER";
+                if(document.getElementById("place_submarine").desabled == false) {
+                   document.getElementById("place_submarine").focus();
+                   registerCellListener(place(5));
+                   shipType = "SUBMARINE";
+                }
+                else if(document.getElementById("place_minesweeper").disabled == false) {
+                   document.getElementById("place_minesweeper").focus();
+                   registerCellListener(place(2));
+                   shipType = "MINESWEEPER";
+                }
+                else {
+                    document.getElementById("place_destroyer").focus();
+                    registerCellListener(place(4));
+                    shipType = "DESTROYER";
                 }
             }
-            if (placedShips == 3) {
+            else {
+                document.getElementById("place_submarine").classList.add("disabled");
+                document.getElementById("place_submarine_v").classList.add("disabled");
+                document.getElementById("place_submarine").disabled = true;
+                document.getElementById("place_submarine_v").disabled = true;
+
+                if(document.getElementById("place_minesweeper").disabled == false) {
+                   document.getElementById("place_minesweeper").focus();
+                   registerCellListener(place(2));
+                   shipType = "MINESWEEPER";
+                }
+                else if(document.getElementById("place_destroyer").disabled == false) {
+                    document.getElementById("place_destroyer").focus();
+                    registerCellListener(place(4));
+                    shipType = "DESTROYER";
+                }
+                else {
+                    document.getElementById("place_battleship").focus();
+                    registerCellListener(place(4));
+                    shipType = "BATTLESHIP";
+                }
+            }
+            if (placedShips == 4) {
                 isSetup = false;
                 redrawGrid();
                 registerCellListener((e) => {});
@@ -350,23 +388,68 @@ function place(size) {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
         let table = document.getElementById("player");
+        let isSub = 0;
+        let nub = 0;
+        if(size == 5) {
+            if(vertical || (!vertical && row < 9)) {
+                isSub = 1;
+            }
+        }
         for (let i=0; i<size && (vertical ? 0 <= i + row && i + row < 10: 0 < i + col && i + col < 11) && i + col != 0; i++) {
+            if(i == 4) {
+                break;
+            }
             let cell;
             if(vertical) {
                 let tableRow = table.rows[row+i];
                 if (tableRow === undefined) {
-                    // ship is over the edge; let the back end deal with it
                     break;
                 }
-                cell = tableRow.cells[col];
+                if(nub == 1) {
+                    cell = tableRow.cells[col+1];
+                    nub = 2;
+                    isSub = 0;
+                }
+                else {
+                    cell = tableRow.cells[col];
+                }
             } else {
-                cell = table.rows[row].cells[col+i];
+                if(nub == 1) {
+                    let tableRow = table.rows[row+1]
+                    if(tableRow === undefined) {
+
+                    }
+                    else {
+                        cell = table.rows[row+1].cells[col+i];
+                        nub = 2;
+                        isSub = 0;
+                    }
+                }
+                else {
+                    cell = table.rows[row].cells[col+i];
+                }
             }
             if (cell === undefined) {
                 // ship is over the edge; let the back end deal with it
-                break;
+                if(nub == 2) {
+                }
+                else {
+                    break;
+                }
             }
-            cell.classList.toggle("placed");
+            else {
+                nub = 0;
+            }
+            if(nub == 2) {
+                nub = 0;
+            }
+            else {
+                cell.classList.toggle("placed");
+            }
+            if(i == 2 && isSub) {
+                nub = 1;
+                i--;
+            }
         }
     }
 }
@@ -380,13 +463,18 @@ function initGame() {
         vertical = false;
     });
     document.getElementById("place_destroyer").addEventListener("click", function(e) {
-        shipType = "DESTROYER";
+       shipType = "DESTROYER";
        registerCellListener(place(3));
        vertical = false;
     });
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
         registerCellListener(place(4));
+        vertical = false;
+    });
+    document.getElementById("place_submarine").addEventListener("click", function(e) {
+        shipType = "SUBMARINE";
+        registerCellListener(place(5));
         vertical = false;
     });
     document.getElementById("place_minesweeper_v").addEventListener("click", function(e) {
@@ -403,6 +491,16 @@ function initGame() {
         shipType = "BATTLESHIP";
         registerCellListener(place(4));
         vertical = true;
+    });
+    document.getElementById("place_battleship_v").addEventListener("click", function(e) {
+        shipType = "BATTLESHIP";
+        registerCellListener(place(4));
+        vertical = true;
+    });
+    document.getElementById("place_submarine_v").addEventListener("click", function(e) {
+       shipType = "SUBMARINE";
+       registerCellListener(place(5));
+       vertical = true;
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;

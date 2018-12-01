@@ -7,37 +7,44 @@
 }
 
 #shipContainer {
-    width: 100%;
+    margin-top: 8px;
+    width: 140%;
     border-style: solid;
     border-width: 2px;
 }
 
 #place_minesweeper{
-    width: 44%;
+    width: 36%;
 }
 
 #place_destroyer {
-    width: 66%;
+    width: 54%;
 }
 
 #place_battleship {
-   width: 88%;
+   width: 72%;
+}
+
+#place_submarine {
+    width: 90%;
 }
 
 #place_minesweeper_v{
-    height: 44%;
+    height: 36%;
 }
 
 #place_destroyer_v {
-    height: 66%;
+    height: 54%;
 }
 
 #place_battleship_v {
-   height: 88%;
+   height: 72%;
 }
-
+#place_submarine_v {
+    height: 90%;
+}
 #shipBank {
-    text-align: left;
+    text-align: center;
 }
 
 .disabled {
@@ -95,7 +102,7 @@ button:focus {
     text-decoration: none;
     padding: 7px 0px;
     margin: 7px 0px 7px 7px;
-    width: 40px;
+    width: 45px;
 }
 .horizontal {
     border: 2px solid black;
@@ -104,10 +111,10 @@ button:focus {
     text-decoration: none;
     padding: 7px 0px;
     margin: 7px 0px 7px 7px;
-    height: 40px;
+    height: 45px;
 }
 #verticalContainer {
-    height: 140px;
+    height: 230px;
 }
 
 .battleGridContainer{
